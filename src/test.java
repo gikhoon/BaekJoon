@@ -1,51 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class test {
-    public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+    static int[][] A = new int[10][10];
 
-        Queue<Integer> q = new LinkedList<>();
-        int commandCount = Integer.parseInt(bf.readLine());
-        int lastData = -1;
-        while(commandCount-->0){
-            String command=bf.readLine();
-            String[] commands = command.split(" ");
-            switch (commands[0]){
-                case "push":
-                    q.offer(Integer.parseInt(commands[1]));
-                    lastData = Integer.parseInt(commands[1]);
-                    break;
-                case "pop":
-                    if(q.isEmpty()) System.out.println("-1");
-                    else{
-                        System.out.println(q.poll());
-                        if(q.isEmpty()) lastData=-1;
-                    }
-                    break;
-                case "size":
-                    System.out.println(q.size());
-                    break;
-                case "empty":
-                    if(q.size()==0){System.out.println("1");}
-                    else{System.out.println("0");}
-                    break;
-                case "front":
-                    if(q.isEmpty()) {
-                        System.out.println("-1");
-                    }else{
-                        System.out.println(q.peek());
-                    }
-                    break;
-                case "back":
-                    System.out.println(lastData);
-                    break;
-                default:
-            }
-        }
+    public static void main(String[] args) {
+        System.out.println(A.length);
     }
 }
-
