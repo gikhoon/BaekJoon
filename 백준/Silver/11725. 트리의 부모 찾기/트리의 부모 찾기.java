@@ -44,9 +44,11 @@ public class Main {
             }
         }
 
-        for (int i = 2; i <= N; i++) {
-            System.out.println(parentNode[i]);
+        StringBuilder sb = new StringBuilder();
+        for(int i=2; i<=N; i++){
+            sb.append(parentNode[i]).append("\n");
         }
+        System.out.println(sb);
 
     }
 
