@@ -15,7 +15,8 @@ public class Main {
         int K = Integer.parseInt(st.nextToken());
         Stack<Integer> coinList = new Stack<>();
         for (int i = 0; i < N; i++) {
-            coinList.add(Integer.parseInt(br.readLine()));
+            int mount = Integer.parseInt(br.readLine());
+            if (mount <= K) coinList.add(mount);
         }
 
         int sum = 0;
