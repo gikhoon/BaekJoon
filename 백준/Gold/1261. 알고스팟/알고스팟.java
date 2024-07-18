@@ -81,6 +81,7 @@ public class Main {
                 if (map[i][j] == 0) {
                     PriorityQueue<Node> queue = new PriorityQueue<>();
                     queue.add(new Node(i, j));
+                    isVisited[i][j] = true;
                     while (!queue.isEmpty()) {
                         Node poll = queue.poll();
                         for (int d = 0; d < 4; d++) {
