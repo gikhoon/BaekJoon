@@ -4,19 +4,19 @@ class Solution {
     boolean solution(String s) {
         boolean answer = true;
     
-        Stack<Character> st = new Stack<>();
+        int count = 0;
         
         for (char c: s.toCharArray()) {
-            if (c == '('){
-                st.push(c);
-            }
-            else {
-                if(st.isEmpty()){answer = false; break;}
-                else st.pop();
+            if (c == '(') count++;
+            else count--;
+            
+            if (count < 0){
+                answer = false;
+                break;
             }
         }
         
-        if (!st.isEmpty()) answer = false; 
+        if (count != 0) answer = false;
 
         return answer;
     }
