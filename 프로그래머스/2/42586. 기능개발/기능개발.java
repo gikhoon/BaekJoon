@@ -1,5 +1,4 @@
 import java.util.*;
-import java.lang.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
@@ -19,7 +18,7 @@ class Solution {
             }
             progressCount.add(count);
         }
-        StringBuilder sb = new StringBuilder();
+        
         int[] answer = new int[progressCount.size()];
         
         for (int i=0;i<progressCount.size();i++){
