@@ -13,20 +13,13 @@ public class Main {
         int[] list = new int[n];
         int k = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < n; i++) {
-            list[i] = Integer.parseInt(br.readLine());
-        }
-
-        Arrays.sort(list);
-
         int[] dp = new int[k + 1];
         dp[0] = 1;
+
         for (int i = 0; i < n; i++) {
-            int coin = list[i];
-            for (int j = 1; j <= k; j++) {
-                if (j - coin >= 0) {
-                    dp[j] += dp[j - coin];
-                }
+            list[i] = Integer.parseInt(br.readLine());
+            for (int j = list[i]; j <= k; j++) {
+                dp[j] += dp[j - list[i]];
             }
         }
 
