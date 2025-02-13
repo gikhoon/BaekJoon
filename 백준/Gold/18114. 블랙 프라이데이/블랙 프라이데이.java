@@ -47,12 +47,7 @@ public class Main {
 
             int remain = C - weight;
 
-            if (remain == weights[right] || remain == weights[left]) {
-                left++;
-                continue;
-            }
-
-            if (set.contains(remain)) {
+            if (set.contains(remain) && remain != weights[left] && remain != weights[right]) {
                 System.out.println(1);
                 return;
             }
