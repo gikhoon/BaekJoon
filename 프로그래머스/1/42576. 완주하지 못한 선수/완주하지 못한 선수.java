@@ -1,28 +1,30 @@
 import java.util.*;
+import java.lang.*;
 
 class Solution {
     public String solution(String[] participant, String[] completion) {
-        Map<String, Integer> map = new HashMap();
+        HashMap<String, Integer> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
         
-        for(int i=0;i<participant.length;i++){
-            if(map.containsKey(participant[i])){
-                int replace = map.get(participant[i])+1;
-                map.replace(participant[i], replace);
-            } else{
-                map.put(participant[i], 1);
+        for(String person : participant) {
+            if(map.containsKey(person)){
+                map.put(person, map.get(person) + 1);
+            } else {
+                map.put(person, 1);
+                set.add(person);
             }
         }
         
-        for(int i=0;i<completion.length;i++){
-            if(map.get(completion[i]).equals(1)){
-                map.remove(completion[i]);
-            } else{
-                int replace = map.get(completion[i])-1;
-                map.replace(completion[i], replace);
+        for(String person : completion) {
+            int count = map.get(person);
+            if(count == 1) {
+                map.remove(person);
+                set.remove(person);
+            } else {
+                map.put(person, count-1);
             }
         }
         
-        String answer = map.keySet().iterator().next();
-        return answer;
+        return set.iterator().next();
     }
 }
