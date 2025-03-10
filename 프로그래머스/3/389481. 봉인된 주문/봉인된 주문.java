@@ -19,6 +19,7 @@ class Solution {
     }
     
     private String findAnswer(long n, int banLength, List<String> bans, int index, String answer) {
+        System.out.println(banLength+" "+answer);
         if (answer.length() == banLength) return answer;
         
         HashMap<Character, List<String>> withC = new HashMap<>();
