@@ -4,25 +4,20 @@ class Solution {
     public int[] solution(int[] numbers) {
         int len = numbers.length;
         int[] answer = new int[len];
-        int[] index = new int[len];
+        Stack<Integer> st = new Stack<>();
+        st.push(0);
         Arrays.fill(answer, -1);
-        for(int i=len-2;i>=0;i--) {
-            int num = numbers[i];
-            if(num < numbers[i+1]) {
-                answer[i] = numbers[i+1];
-                index[i] = i+1;
-                continue;
-            }
-            
-            int idx = i+1;
-            while(answer[idx] != -1) {
-                if(answer[idx] > num) {
-                    answer[i] = answer[idx];
-                    index[i] = index[idx];
+        for(int i=1;i<len;i++) {
+            while(!st.isEmpty()) {
+                int index = st.pop();
+                if(numbers[index] < numbers[i]) {
+                    answer[index] = numbers[i];
+                } else {
+                    st.push(index);
                     break;
                 }
-                idx = index[idx];
             }
+            st.push(i);
         }
         return answer;
     }
