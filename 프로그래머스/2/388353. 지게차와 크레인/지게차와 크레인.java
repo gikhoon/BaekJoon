@@ -51,10 +51,6 @@ class Solution {
     }
     
     private boolean isOut(int r, int c) {
-        if((r == 1 || r == map.length- 2) || (c == 1 || c == map[0].length - 2)) {
-            System.out.println(r+" "+c);
-            return true;
-        }
         boolean flag = false;
         boolean[][] visit = new boolean[map.length][map[0].length];
         Queue<Index> q = new LinkedList<>();
