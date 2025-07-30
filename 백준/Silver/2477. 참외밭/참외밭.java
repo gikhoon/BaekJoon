@@ -1,77 +1,57 @@
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-class Node {
+class Node2 {
     int dir;
     int len;
 
-    public Node(int dir, int len) {
-        this.dir = dir;
-        this.len = len;
+    public Node2(int r, int c) {
+        this.dir=r;
+        this.len=c;
     }
 }
-
 public class Main {
-    static int[] memo;
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        int N = Integer.parseInt(br.readLine());
-        Node[] seq = new Node[6];
-        List<Integer>[] mapByDir =new List[5];
-        for (int i = 1; i <= 4; i++) {
-            mapByDir[i] = new ArrayList<>();
-        }
-
-        int minR = 0, minC = 0;
-        for (int i = 0; i < 6; i++) {
-            st = new StringTokenizer(br.readLine());
-            int dir = Integer.parseInt(st.nextToken());
-            int length = Integer.parseInt(st.nextToken());
-            seq[i] = new Node(dir, length);
-            mapByDir[dir].add(length);
-            if (i >= 2 && seq[i].dir == seq[i - 2].dir) {
-                if (seq[i - 1].dir <= 2) {
-                    minR = seq[i - 1].len;
-                } else {
-                    minC = seq[i - 1].len;
+    public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int cal = Integer.parseInt(br.readLine());
+    Node2[] nodes = new Node2[6];
+    int[] count = new int[5];
+    int sum = 1;
+    StringTokenizer st;
+    
+    for(int i=0;i<6;i++) {
+        st = new StringTokenizer(br.readLine());
+        int dir = Integer.parseInt(st.nextToken());
+        int len = Integer.parseInt(st.nextToken());
+        nodes[i] = new Node2(dir, len);
+        count[dir]++;
+    }
+    
+    for(int i=1;i<=4;i++) {
+        if(count[i] == 1) {
+            for(int j=0;j<6;j++) {
+                if(nodes[j].dir == i) {
+                    sum *= nodes[j].len;
+                    break;
                 }
             }
         }
-
-        if (seq[0].dir == seq[4].dir) {
-            if (seq[5].dir <= 2) {
-                minR = seq[5].len;
-            } else {
-                minC = seq[5].len;
-            }
-        }
-
-        if (seq[1].dir == seq[5].dir) {
-            if (seq[0].dir <= 2) {
-                minR = seq[0].len;
-            } else {
-                minC = seq[0].len;
-            }
-        }
-
-        //0 4비교 + 1 5 비교 해야함
-
-        int size = 1;
-        for (int i=1;i<=4;i++) {
-            List<Integer> l = mapByDir[i];
-            if (l.size() == 1) {
-                size *= l.get(0);
-            }
-        }
-
-        size -= (minC * minR);
-        System.out.println(size * N);
     }
+    
+    int[] minus = new int[2];
+    int index = 0;
+    for(int i=0;i<6;i++) {
+        int before = i-1;
+        if(before == -1) {
+            before = 5;
+        }
+        int after = (i+1) % 6;
+        if(nodes[before].dir == nodes[after].dir) {
+            minus[index++] = nodes[i].len;
+        }
+    }
+    
+    System.out.println((sum-minus[0] * minus[1])*cal);
+}
 
-    //순서를 저장
-    //앞 뒤의 방향이 같으면 min 갯수가 하나면 max
-    //시작과 끝이 같을 수 있다. 5번쨰랑 1번째, 4번째랑 0번째
 }
