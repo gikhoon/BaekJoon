@@ -43,8 +43,6 @@ public class Main {
 			return true;
 		}
 
-		visited[r][c] = true;
-
 		boolean isOk = false;
 		for (int d = 0; d < 3; d++) {
 			if (r + dr[d] < 0 || r + dr[d] >= N)
@@ -52,6 +50,8 @@ public class Main {
 			if (visited[r + dr[d]][c + 1]) {
 				continue;
 			}
+
+			visited[r][c] = true;
 			if (map[r + dr[d]][c + 1]) {
 				isOk = dfs(r + dr[d], c + 1);
 			}
