@@ -1,52 +1,49 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	static int[] parent;
+    static int[] parents;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        parents = new int[N];
+        for (int i = 0; i < N; i++) {
+            parents[i] = i;
+        }
 
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
+        for (int i = 1; i <= M; i++) {
+            st = new StringTokenizer(br.readLine());
+            if (!union(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()))) {
+                System.out.println(i);
+                return;
+            }
+        }
 
-		parent = new int[N];
-		for (int i = 0; i < N; i++) {
-			parent[i] = i;
-		}
+        System.out.println(0);
+    }
 
-		for (int round = 1; round <= M; round++) {
-			st = new StringTokenizer(br.readLine());
-			int node1 = Integer.parseInt(st.nextToken());
-			int node2 = Integer.parseInt(st.nextToken());
+    private static boolean union(int a, int b) {
+        int rootA = find(a);
+        int rootB = find(b);
 
-			if(!union(node1, node2)) {
-				System.out.println(round);
-				return;
-			}
-		}
+        if (rootA == rootB) {
+            return false;
+        }
 
-		System.out.println(0);
-	}
+        parents[rootA] = rootB;
+        return true;
+    }
 
-	private static int find(int node) {
-		if (node == parent[node]) {
-			return node;
-		}
-		parent[node] = find(parent[node]);
-		return parent[node];
-	}
+    private static int find(int a) {
+        if (parents[a] == a) {
+            return a;
+        }
 
-	private static boolean union(int node1, int node2) {
-		int root1 = find(node1);
-		int root2 = find(node2);
-
-		if (root1 == root2) {
-			return false;
-		}
-
-		parent[root1] = root2;
-		return true;
-	}
+        return parents[a] = find(parents[a]);
+    }
 }
