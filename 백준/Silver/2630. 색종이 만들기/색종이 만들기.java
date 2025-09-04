@@ -4,53 +4,55 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static int blue = 0;
-    static int white = 0;
-
-    static boolean[][] paper;
-    public static void main(String[] args) throws IOException {
+    static boolean[][] map;
+    static int N;
+    static int one = 0, zero = 0;
+	public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        map = new boolean[N][N];
         StringTokenizer st;
-        int N = Integer.parseInt(br.readLine());
-        paper = new boolean[N][N];
 
-        for (int i=0;i<N;i++){
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j=0;j<N;j++){
-                int a = Integer.parseInt(st.nextToken());
-                if (a == 1) paper[i][j] = true;
+            for (int j = 0; j < N; j++) {
+                if (st.nextToken().equals("1")) {
+                    map[i][j] = true;
+                }
             }
         }
 
-        findAnswer(0, 0, N);
+        find(0, 0, N);
+        System.out.println(zero);
+        System.out.println(one);
+	}
 
-        System.out.println(white);
-        System.out.println(blue);
-    }
-
-    private static void findAnswer(int r, int c, int size) {
-        boolean first = paper[r][c];
+    private static void find(int startR, int startC, int size) {
+        boolean de = map[startR][startC];
         boolean isSame = true;
-
-        for (int i=r;i<r+size;i++){
-            for (int j=c;j<c+size;j++){
-                if (paper[i][j] != first){
+        for (int i = startR; i < startR + size; i++) {
+            if(!isSame) break;
+            for (int j = startC; j < startC + size; j++) {
+                if (map[i][j] != de) {
                     isSame = false;
                     break;
                 }
             }
-            if (!isSame) break;
         }
 
         if (isSame) {
-            if (first) blue++;
-            else white++;
+            if(de) {
+                one++;
+            } else {
+                zero++;
+            }
         } else {
-            findAnswer(r,c,size/2);
-            findAnswer(r + size/2,c,size/2);
-            findAnswer(r,c + size/2,size/2);
-            findAnswer(r + size/2,c + size/2,size/2);
+            int newSize = size /2;
+            find(startR, startC, newSize);
+            find(startR, startC + newSize, newSize);
+            find(startR + newSize, startC, newSize);
+            find(startR + newSize, startC + newSize, newSize);
         }
+
     }
 }
