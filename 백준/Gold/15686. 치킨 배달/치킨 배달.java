@@ -6,68 +6,75 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int M;
-    static List<Node> house = new ArrayList<>();
+    static int N, M;
     static List<Node> chicken = new ArrayList<>();
+    static List<Node> home = new ArrayList<>();
     static boolean[] isVisited;
-    static int min = Integer.MAX_VALUE;
+    static int answer = Integer.MAX_VALUE;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        for(int i=0;i<N;i++){
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=0;j<N;j++){
-                int data = Integer.parseInt(st.nextToken());
-                if(data==1){
-                    house.add(new Node(i, j));
-                }else if(data==2){
+            for (int j = 0; j < N; j++) {
+                String s = st.nextToken();
+                if (s.equals("1")) {
+                    home.add(new Node(i, j));
+                } else if (s.equals("2")) {
                     chicken.add(new Node(i, j));
                 }
             }
         }
+
         isVisited = new boolean[chicken.size()];
+        dfs(0, 0);
 
-        backTracking(0,0);
-        System.out.println(min);
-
+        System.out.println(answer);
     }
-    private static void backTracking(int deep, int index){
-        if(deep==M){
-            int cityLength = 0;
-            for (Node node : house) {
-                int sum = Integer.MAX_VALUE;
-                for (int j = 0; j < chicken.size(); j++) {
-                    if (isVisited[j]) {
-                        int dist = Math.abs(node.r - chicken.get(j).r)
-                                + Math.abs(node.c - chicken.get(j).c);
-                        sum = Math.min(sum, dist);
-                    }
-                }
-                cityLength += sum;
-            }
-            min = Math.min(cityLength, min);
-            return;
+
+    static void dfs(int depth, int index) {
+        if (depth == M) {
+            findDist();
         }
-        for(int i=index;i<chicken.size();i++){
-            if(!isVisited[i]){
-                isVisited[i]=true;
-                backTracking(deep+1,i+1);
-                isVisited[i]=false;
-            }
+
+        for (int i = index; i < isVisited.length; i++) {
+            isVisited[i] = true;
+            dfs(depth + 1, i + 1);
+            isVisited[i] = false;
         }
+    }
+
+    static void findDist() {
+        int sum = 0;
+        for (Node house : home) {
+            if(sum > answer) return;
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < chicken.size(); i++) {
+                if(!isVisited[i]) continue;
+                Node ch = chicken.get(i);
+                min = Math.min(min, dist(house, ch));
+            }
+            sum += min;
+        }
+
+        answer = Math.min(sum, answer);
+    }
+
+    static int dist(Node a, Node b) {
+        return Math.abs(a.r - b.r) + Math.abs(a.c - b.c);
     }
 }
-class Node{
+
+class Node {
     int r;
     int c;
-    Node(int r,int c){
-        this.r=r;
-        this.c=c;
+
+    public Node(int r, int c) {
+        this.r = r;
+        this.c = c;
     }
 }
