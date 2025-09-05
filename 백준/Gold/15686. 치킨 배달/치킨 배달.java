@@ -41,6 +41,10 @@ public class Main {
             findDist();
         }
 
+
+        //7개인데 지금 5야 => 2개만 가능 남은 갯수
+        //총 5개 뽑아야 하는데 지금 3까지만 가능
+        if(isVisited.length - index < M - depth) return;
         for (int i = index; i < isVisited.length; i++) {
             isVisited[i] = true;
             dfs(depth + 1, i + 1);
