@@ -1,86 +1,71 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-public class Main {
-    static long count;
+class Main {
+	static int[] arr1, arr2;
+	static long answer;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int[][] arr = new int[N][4];
 
-    static int[] A, B, C, D;
+		StringTokenizer st;
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < 4; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
 
-    static int N;
+		arr1 = new int[N * N];
+		arr2 = new int[N * N];
 
-    static int[] AB, CD;
+		int index= 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				arr1[index] = arr[i][0] + arr[j][1];
+				arr2[index++] = arr[i][2] + arr[j][3];
+			}
+		}
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
 
-        N = Integer.parseInt(br.readLine());
-        A = new int[N];
-        B = new int[N];
-        C = new int[N];
-        D = new int[N];
-        AB = new int[N * N];
-        CD = new int[N * N];
+		findAnswer();
 
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            A[i] = Integer.parseInt(st.nextToken());
-            B[i] = Integer.parseInt(st.nextToken());
-            C[i] = Integer.parseInt(st.nextToken());
-            D[i] = Integer.parseInt(st.nextToken());
-        }
+		System.out.println(answer);
 
-        int idx = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                AB[idx] = A[i] + B[j];
-                CD[idx++] = C[i] + D[j];
-            }
-        }
+		//N^2 N^2 16_000_000 *
+	}
 
-        Arrays.sort(AB);
-        Arrays.sort(CD);
+	private static void findAnswer() {
+		int start = 0;
+		int end = arr2.length - 1;
 
-        findAnswer();
+		while (start < arr1.length && end >= 0) {
+			int num1 = arr1[start];
+			int num2 = arr2[end];
 
-        System.out.println(count);
-    }
+			if (num1 + num2 == 0) {
+				long count1 = 0;
+				long count2 = 0;
 
+				while (start < arr1.length && arr1[start] == num1) {
+					count1++;
+					start++;
+				}
 
-    /**
-     * 4000 * 4000 * 2 = 16_000_000 * 2 * 2
-     */
-    private static void findAnswer() {
-        int pointL = 0;
-        int pointR = CD.length - 1;
-        while (pointL < AB.length && pointR >= 0) {
-            int valL = AB[pointL];
-            int valR = CD[pointR];
+				while (end >= 0 && arr2[end] == num2) {
+					count2++;
+					end--;
+				}
 
-            if (valL + valR == 0) {
-                long cntL = 0;
-                long cntR = 0;
-
-                while (pointL < AB.length && valL == AB[pointL]) {
-                    cntL++;
-                    pointL++;
-                }
-
-                while (pointR >= 0 && valR == CD[pointR]) {
-                    cntR++;
-                    pointR--;
-                }
-
-                count += cntL * cntR;
-            }
-            else if (valL + valR < 0) {
-                pointL++;
-            }
-            else {
-                pointR--;
-            }
-        }
-
-    }
+				answer += count1 * count2;
+			} else if (num1 + num2 > 0) {
+				end--;
+			} else {
+				start++;
+			}
+		}
+	}
 }
