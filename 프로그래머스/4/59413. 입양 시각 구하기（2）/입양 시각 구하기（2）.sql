@@ -1,0 +1,17 @@
+WITH RECURSIVE OUTS AS (
+    SELECT 0 AS N
+
+    UNION ALL
+
+    SELECT N+1
+    FROM OUTS
+    WHERE N < 23)
+
+
+SELECT N as HOUR, COUNT(ANIMAL_ID) as COUNT
+FROM OUTS o left join ANIMAL_OUTS a on o.N = HOUR(a.DATETIME)
+GROUP BY N
+order by N
+
+# SELECT *
+# FROM OUTS o left join ANIMAL_OUTS a on o.N = HOUR(a.DATETIME)
