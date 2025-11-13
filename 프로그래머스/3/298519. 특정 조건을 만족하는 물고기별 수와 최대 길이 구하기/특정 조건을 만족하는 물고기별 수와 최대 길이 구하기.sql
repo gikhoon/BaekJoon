@@ -1,0 +1,6 @@
+-- 코드를 작성해주세요
+SELECT COUNT(ID) as FISH_COUNT, MAX(LENGTH) as MAX_LENGTH, FISH_TYPE
+FROM FISH_INFO
+group by FISH_TYPE
+having avg(LENGTH) >= 33
+order by FISH_TYPE
