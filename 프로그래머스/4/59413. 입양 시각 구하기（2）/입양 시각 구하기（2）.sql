@@ -1,11 +1,11 @@
-WITH RECURSIVE OUTS AS (
-    SELECT 0 AS N
-
+With recursive outs as (
+    SELECT 0 as N
+    
     UNION ALL
-
-    SELECT N+1
-    FROM OUTS
-    WHERE N < 23)
+    
+    SELECT N+1 from outs
+    where N < 23
+)
 
 
 SELECT N as HOUR, COUNT(ANIMAL_ID) as COUNT
