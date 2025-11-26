@@ -15,9 +15,10 @@ class Solution {
     String number;
     public int solution(String numbers) {
         number = numbers;
-        dp = new int[numbers.length()+1][10][10];
         
-        for(int i=0;i<=numbers.length();i++) {
+        dp = new int[number.length()][10][10];
+        
+        for(int i=0;i<number.length();i++) {
             for(int j=0;j<10;j++) {
                 Arrays.fill(dp[i][j], -1);
             }
@@ -31,20 +32,27 @@ class Solution {
             return 0;
         }
         
-        if(dp[idx][left][right]!=-1) return dp[idx][left][right];
-        
-        int num = number.charAt(idx) - '0';
-        int ans = Integer.MAX_VALUE;
-        
-        if(num!=right){
-            ans = Math.min(dfs(idx+1, num, right)+cost[left][num], ans);   
+        if(dp[idx][left][right] != -1) {
+            return dp[idx][left][right];
         }
         
-        if(num!=left){
-            ans = Math.min(dfs(idx+1, left, num)+cost[right][num], ans);   
+        int index = number.charAt(idx) - '0';
+        
+        
+        int min = Integer.MAX_VALUE;
+        
+        //right랑 같지 않으면 left 이동 가능
+        if(right != index) {
+            min = Math.min(min, dfs(idx+1, index, right) + cost[left][index]);
         }
         
-        return dp[idx][left][right] = ans;
+        if(left != index) {
+            min = Math.min(min, dfs(idx+1, left, index) + cost[right][index]);
+        }
         
+        dp[idx][left][right] = min;
+        dp[idx][right][left] = min;
+        
+        return dp[idx][left][right];
     }
 }
